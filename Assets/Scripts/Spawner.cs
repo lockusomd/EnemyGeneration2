@@ -4,13 +4,14 @@ using UnityEngine.Pool;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] Enemy _prefab;
+    [SerializeField] private Enemy _prefab;
+    [SerializeField] private Target _target;
 
     private ObjectPool<Enemy> _pool;
 
     private int _defaultCapacity = 5;
     private int _maxSize = 10;
-    private int _repeatRate = 2;
+    private int _repeatRate = 20;
 
     private void Awake()
     {
@@ -45,48 +46,11 @@ public class Spawner : MonoBehaviour
     {
         enemy.Died += SendToPool;
 
-        enemy.transform.position = GetPosition();
-        enemy.GetComponent<Mover>().SetDirection(GetDirection().normalized);
+        enemy.transform.position = transform.position;
+
+        enemy.SetTarget(_target);
+
         enemy.gameObject.SetActive(true);
-    }
-
-    private Vector3 GetPosition()
-    {
-        Vector3 position = new Vector3(GetSpawnPoint().x, GetSpawnPoint().y, GetSpawnPoint().z);
-
-        return position;
-    }
-
-    private Vector3 GetSpawnPoint()
-    {
-        Vector3[] spawnPoints =
-        {
-            new Vector3(2,0,-2),
-            new Vector3(2,0,2),
-            new Vector3(-2,0,2),
-            new Vector3(-2,0,-2)
-        };
-
-        return spawnPoints[Random.Range(0, spawnPoints.Length)];
-    }
-
-    private Vector3 GetDirection()
-    {
-        int numberX;
-        int numberZ;
-
-        do
-        {
-            numberX = Random.Range(-1, 1);
-            numberZ = Random.Range(-1, 1);
-        } while (numberX == 0 && numberZ == 0);
-
-        return new Vector3(numberX, 0, numberZ);
-    }
-
-    private Quaternion GetRotation()
-    {
-        return Quaternion.Euler(0, Random.Range(0, 360), 0);
     }
 
     private void SendToPool(Enemy enemy)
