@@ -18,8 +18,6 @@ public class Mover : MonoBehaviour
     public void SetTarget(Vector3 target)
     {
         _target = target;
-
-        Debug.Log(_target);
     }
 
     public void SetSpeed(float speed)
