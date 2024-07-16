@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour
 
     private int _defaultCapacity = 5;
     private int _maxSize = 10;
-    private int _repeatRate = 20;
+    private int _repeatRate = 5;
 
     private void Awake()
     {

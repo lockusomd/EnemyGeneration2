@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    private int _speed = 1;
-    private Vector3 _direction;
+    private float _speed = 5f;
+    private Vector3 _target;
 
     private void Update()
     {
@@ -12,11 +12,18 @@ public class Mover : MonoBehaviour
 
     private void Move()
     {
-        transform.Translate(_direction * _speed * Time.deltaTime);
+        transform.Translate(_target * _speed * Time.deltaTime);
     }
 
-    public void SetDirection(Vector3 direction)
+    public void SetTarget(Vector3 target)
     {
-        _direction = direction;
+        _target = target;
+
+        Debug.Log(_target);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
     }
 }

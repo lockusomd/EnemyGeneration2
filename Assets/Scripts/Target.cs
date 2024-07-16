@@ -14,23 +14,32 @@ public class Target : MonoBehaviour
         _componentMover = GetComponent<Mover>();
 
         _checkpoint = _checkpoints[_checkpointIndex];
+
+        _componentMover.SetTarget((_checkpoint.transform.position - transform.position).normalized);
     }
 
     private void Update()
     {
-        _componentMover.SetDirection((_checkpoint.transform.position - transform.position).normalized);
+        if (IsCheckpointReached())
+            ChangeDirection();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private bool IsCheckpointReached()
     {
-        if (collider.transform.position == _checkpoint.transform.position)
-        {
-            _checkpointIndex++;
+        float distance = Vector3.Distance(_checkpoint.transform.position, transform.position);
 
-            if (_checkpointIndex == _checkpoints.Count)
-                _checkpointIndex = 0;
+        return distance < 0.5f;
+    }
 
-            _checkpoint = _checkpoints[_checkpointIndex];
-        }
+    private void ChangeDirection()
+    {
+        _checkpointIndex++;
+
+        if (_checkpointIndex == _checkpoints.Count)
+            _checkpointIndex = 0;
+
+        _checkpoint = _checkpoints[_checkpointIndex];
+
+        _componentMover.SetTarget((_checkpoint.transform.position - transform.position).normalized);
     }
 }

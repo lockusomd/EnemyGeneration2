@@ -4,6 +4,7 @@ using System;
 public class Enemy : MonoBehaviour
 {
     private Target _target;
+    private float _speed = 1f;
 
     public event Action<Enemy> Died;
 
@@ -12,11 +13,13 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _componentMover = GetComponent<Mover>();
+
+        _componentMover.SetSpeed(_speed);
     }
 
     private void Update()
     {
-        _componentMover.SetDirection((_target.transform.position - transform.position).normalized);
+        _componentMover.SetTarget((_target.transform.position - transform.position).normalized);
     }
 
     private void OnTriggerEnter(Collider collider)
