@@ -4,11 +4,11 @@ using System;
 public class Enemy : MonoBehaviour
 {
     private Target _target;
+    private Mover _componentMover;
+
     private float _speed = 1f;
 
     public event Action<Enemy> Died;
-
-    private Mover _componentMover;
 
     private void Start()
     {

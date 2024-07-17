@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Mover))]
 public class Target : MonoBehaviour
 {
     [SerializeField] private List<Checkpoint> _checkpoints = new List<Checkpoint>();
@@ -15,7 +16,7 @@ public class Target : MonoBehaviour
 
         _checkpoint = _checkpoints[_checkpointIndex];
 
-        _componentMover.SetTarget((_checkpoint.transform.position - transform.position).normalized);
+        SetTargetToMover();
     }
 
     private void Update()
@@ -26,20 +27,22 @@ public class Target : MonoBehaviour
 
     private bool IsCheckpointReached()
     {
-        float distance = Vector3.Distance(_checkpoint.transform.position, transform.position);
+        float minDistance = 0.5f;
 
-        return distance < 0.5f;
+        return Vector3.Distance(_checkpoint.transform.position, transform.position) < minDistance;
     }
 
     private void ChangeDirection()
     {
-        _checkpointIndex++;
-
-        if (_checkpointIndex == _checkpoints.Count)
-            _checkpointIndex = 0;
+        _checkpointIndex = ++_checkpointIndex % _checkpoints.Count;
 
         _checkpoint = _checkpoints[_checkpointIndex];
 
+        SetTargetToMover();
+    }
+
+    private void SetTargetToMover()
+    {
         _componentMover.SetTarget((_checkpoint.transform.position - transform.position).normalized);
     }
 }

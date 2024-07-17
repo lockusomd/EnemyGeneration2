@@ -33,12 +33,13 @@ public class Spawner : MonoBehaviour
     private IEnumerator GetEnemy()
     {
         bool isWork = true;
+        var wait = new WaitForSeconds(_repeatRate);
 
         while (isWork)
         {
             _pool.Get();
 
-            yield return new WaitForSeconds(_repeatRate);
+            yield return wait;
         }
     }
 
